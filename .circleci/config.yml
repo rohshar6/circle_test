@@ -23,6 +23,7 @@ jobs:
           command: |
             echo "Test-and-validate workflow is running."
             echo "Branch: ${CIRCLE_BRANCH}"
+            echo "Tag: ${CIRCLE_TAG}"
             echo "Commit: ${CIRCLE_SHA1}"
       - run:
           name: Show workflow output
@@ -59,4 +60,6 @@ workflows:
               only:
                 - main
                 - /pull\/.*/
-                - /gh-readonly-queue\/.*/ # GitHub merge queue branches
+            tags:
+              only:
+                - run-ci
