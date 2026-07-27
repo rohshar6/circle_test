@@ -19,33 +19,39 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Confirm pull request build
+          name: Confirm merge queue build
           command: |
-            if [ -z "$CIRCLE_PULL_REQUEST" ] && [ -z "$CIRCLE_PULL_REQUESTS" ]; then
-              echo "This workflow is intended to run only for pull requests."
-              exit 1
-            fi
-
-            echo "Pull request build detected."
+            echo "Merge queue build detected. Running PR checks before merge."
             echo "Branch: ${CIRCLE_BRANCH}"
             echo "Commit: ${CIRCLE_SHA1}"
-            echo "Pull request: ${CIRCLE_PULL_REQUEST:-$CIRCLE_PULL_REQUESTS}"
       - run:
           name: Show workflow output
           command: |
-            echo "CircleCI PR workflow is running successfully."
+            echo "CircleCI merge queue PR checks are running successfully."
             echo "Add your project-specific build or test commands here."
+
+  test-queue:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: Show test queue output
+          command: |
+            echo "Test-queue workflow is running."
+            echo "Branch: ${CIRCLE_BRANCH}"
+            echo "Commit: ${CIRCLE_SHA1}"
 
 workflows:
   always-run:
     jobs:
       - always-run
 
-  pull-request:
+  test-queue:
     jobs:
-      - pr-checks:
-          filters:
-            branches:
-              ignore:
-                - main
-                - master
+      - test-queue
+
+  pull-request:
+    when: pipeline.git.branch starts-with "gh-readonly-queue/"
+    jobs:
+      - pr-checks
