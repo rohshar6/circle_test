@@ -2,7 +2,7 @@
 
 
 
-This repository contains a basic CircleCI configuration with workflows that run on every build and another workflow that runs pull request checks only for GitHub merge queue builds.
+This repository contains a basic CircleCI configuration with two workflows that run for every pipeline and a conditional PR and tag workflow.
 
 ## CircleCI Configuration
 
@@ -12,11 +12,10 @@ It includes:
 
 - An `always-run` workflow that runs for every CircleCI build.
 - A `test-queue` workflow that runs for every CircleCI build.
-- A `test-and-validate` workflow for selected branches.
+- A `test-and-validate` workflow that runs when a PR is opened, a draft PR is marked ready for review, or the exact Git tag `run-ci` is pushed.
 - An `always-run` job that prints basic branch and commit output.
 - A `test-queue` job that prints basic branch and commit output.
 - A `run-tests` job using the `cimg/base:stable` Docker image.
-- Branch filters for `main`, `pull/*`, and `gh-readonly-queue/*`.
 - A placeholder checks step that can be replaced with project-specific test or build commands.
 
 ## Updating Checks
@@ -33,12 +32,19 @@ For example:
       npm test
 ```
 
-## Merge Queue Trigger
-
-In CircleCI project settings, configure the GitHub trigger option as `Pushes to merge queues`.
-
-CircleCI runs that trigger for pushes to branches that start with `gh-readonly-queue/`. The `test-and-validate` workflow includes that branch prefix in its filters.
-
 ## Notes
 
-CircleCI merge queue trigger behavior depends on using a GitHub App pipeline trigger. The `always-run` and `test-queue` workflows have no condition, so they run for every pipeline.
+Configure three separate GitHub triggers in **CircleCI Project Settings > Project Setup**:
+
+- **PR opened**
+- **PR marked ready for review**
+- **Tag pushes**
+
+CircleCI does not combine these options into one trigger. The workflow condition rejects other event actions, and the job tag filter accepts only the exact `run-ci` tag.
+
+Push the tag with:
+
+```sh
+git tag run-ci
+git push origin run-ci
+```
