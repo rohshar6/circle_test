@@ -1,6 +1,6 @@
 # CircleCI PR Workflow 
 
-This repository contains a basic CircleCI configuration that runs checks for pull request builds.
+This repository contains a basic CircleCI configuration with one workflow that runs on every build and another workflow for pull request checks.
 
 ## CircleCI Configuration
 
@@ -8,7 +8,9 @@ The workflow is defined in `.circleci/config.yml`.
 
 It includes:
 
+- An `always-run` workflow that runs for every CircleCI build.
 - A `pull-request` workflow.
+- An `always-run` job that prints basic branch and commit output.
 - A `pr-checks` job using the `cimg/base:stable` Docker image.
 - A guard that confirms the build has pull request metadata.
 - Branch filters that ignore direct builds on `main` and `master`.
