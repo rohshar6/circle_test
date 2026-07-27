@@ -47,10 +47,6 @@ workflows:
     jobs:
       - always-run
 
-  pull-request:
-    jobs:
-      - always-run
-
   test-queue:
     jobs:
       - test-queue

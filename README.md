@@ -1,6 +1,6 @@
 # CircleCI PR Workflow 
 
-This repository contains a basic CircleCI configuration with one workflow that runs on every build and another workflow for pull request checks.
+This repository contains a basic CircleCI configuration with workflows that run on every build and another workflow that runs pull request checks only for GitHub merge queue builds.
 
 ## CircleCI Configuration
 
@@ -9,8 +9,10 @@ The workflow is defined in `.circleci/config.yml`.
 It includes:
 
 - An `always-run` workflow that runs for every CircleCI build.
-- A `pull-request` workflow.
+- A `test-queue` workflow that runs for every CircleCI build.
+- A `pull-request` workflow for merge queue PR checks before merge.
 - An `always-run` job that prints basic branch and commit output.
+- A `test-queue` job that prints basic branch and commit output.
 - A `pr-checks` job using the `cimg/base:stable` Docker image.
 - A workflow condition that only runs PR checks on branches starting with `gh-readonly-queue/`.
 - A placeholder checks step that can be replaced with project-specific test or build commands.
