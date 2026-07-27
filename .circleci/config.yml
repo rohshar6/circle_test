@@ -22,6 +22,8 @@ jobs:
           name: Show test context
           command: |
             echo "Test-and-validate workflow is running."
+            echo "Event: << pipeline.event.name >>"
+            echo "Action: << pipeline.event.action >>"
             echo "Branch: ${CIRCLE_BRANCH}"
             echo "Tag: ${CIRCLE_TAG}"
             echo "Commit: ${CIRCLE_SHA1}"
@@ -53,13 +55,19 @@ workflows:
       - test-queue
 
   test-and-validate:
+    when: |
+      pipeline.git.tag == "run-ci"
+      or (
+        pipeline.event.name == "pull_request"
+        and (
+          pipeline.event.action == "opened"
+          or pipeline.event.action == "ready_for_review"
+        )
+      )
     jobs:
       - run-tests:
           filters:
             branches:
-              only:
-                - main
-                - /pull\/.*/
+              only: /.*/
             tags:
-              only:
-                - run-ci
+              only: run-ci
