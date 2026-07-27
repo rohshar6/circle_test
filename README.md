@@ -6,7 +6,7 @@ This repository contains a basic CircleCI configuration with workflows that run 
 
 ## CircleCI Configuration
 
-The workflow is defined in `.circleci/config.yml`.
+The workflow is defined in `.circleci/config.yml`. 
 
 It includes:
 
