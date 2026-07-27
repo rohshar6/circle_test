@@ -32,4 +32,4 @@ For example:
 
 ## Notes
 
-CircleCI pull request behavior can depend on the VCS integration and project settings. This config uses CircleCI pull request environment variables to ensure the job only proceeds for pull request builds.
+CircleCI pull request behavior can depend on the VCS integration and project settings. This config uses CircleCI pull request environment variables to ensure the job only proceeds for pull request builds. 
