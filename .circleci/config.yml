@@ -10,6 +10,10 @@ jobs:
           name: Show always workflow output
           command: |
             echo "Always-run workflow is running."
+            echo "Event name: << pipeline.event.name >>"
+            echo "Event action: << pipeline.event.action >>"
+            echo "PR draft: << pipeline.event.github.pull_request.draft >>"
+            echo "PR label: << pipeline.event.github.label.name >>"
             echo "Branch: ${CIRCLE_BRANCH}"
             echo "Commit: ${CIRCLE_SHA1}"
 
@@ -18,17 +22,6 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
-      - run:
-          name: Show test context
-          command: |
-            echo "Test-and-validate workflow is running."
-            echo "Event name: << pipeline.event.name >>"
-            echo "Event action: << pipeline.event.action >>"
-            echo "PR draft: << pipeline.event.github.pull_request.draft >>"
-            echo "PR label: << pipeline.event.github.label.name >>"
-            echo "Branch: ${CIRCLE_BRANCH}"
-            echo "Tag: ${CIRCLE_TAG}"
-            echo "Commit: ${CIRCLE_SHA1}"
       - run:
           name: Show workflow output
           command: |
@@ -74,7 +67,4 @@ workflows:
                 - equal: [ "labeled", << pipeline.event.action >> ]
                 - equal: [ "run-ci", << pipeline.event.github.label.name >> ]
     jobs:
-      - run-tests:
-          filters:
-            branches:
-              only: /.*/
+      - run-tests
