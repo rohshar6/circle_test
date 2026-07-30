@@ -22,8 +22,10 @@ jobs:
           name: Show test context
           command: |
             echo "Test-and-validate workflow is running."
-            echo "Event: << pipeline.event.name >>"
-            echo "Action: << pipeline.event.action >>"
+            echo "Event name: << pipeline.event.name >>"
+            echo "Event action: << pipeline.event.action >>"
+            echo "PR draft: << pipeline.event.github.pull_request.draft >>"
+            echo "PR label: << pipeline.event.github.label.name >>"
             echo "Branch: ${CIRCLE_BRANCH}"
             echo "Tag: ${CIRCLE_TAG}"
             echo "Commit: ${CIRCLE_SHA1}"
