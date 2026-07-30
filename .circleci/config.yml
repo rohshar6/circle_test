@@ -67,4 +67,5 @@ workflows:
                 - equal: [ "labeled", << pipeline.event.action >> ]
                 - equal: [ "run-ci", << pipeline.event.github.label.name >> ]
     jobs:
-      - run-tests
+      - run-tests:
+          name: test-and-validate
