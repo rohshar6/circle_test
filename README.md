@@ -12,7 +12,7 @@ It includes:
 
 - An `always-run` workflow that runs for every CircleCI build.
 - A `test-queue` workflow that runs for every CircleCI build.
-- A `test-and-validate` workflow that runs when a PR is opened, a draft PR is marked ready for review, new commits are pushed to an open non-draft PR, or the `run-ci` label is added to a PR.
+- A `test-and-validate` workflow that always runs on the repository's default branch, or when a PR is opened, a draft PR is marked ready for review, new commits are pushed to an open non-draft PR, or the `run-ci` label is added to a PR.
 - An `always-run` job that prints basic branch and commit output.
 - A `test-queue` job that prints basic branch and commit output.
 - A `run-tests` job using the `cimg/base:stable` Docker image.

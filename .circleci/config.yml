@@ -51,21 +51,24 @@ workflows:
 
   test-and-validate:
     when:
-      and:
-        - equal: [ "pull_request", << pipeline.event.name >> ]
-        - or:
-            # Opened (draft or ready): always run when the PR is created.
-            - equal: [ "opened", << pipeline.event.action >> ]
-            # Any push while the PR is not a draft.
-            - and:
-                - equal: [ "synchronize", << pipeline.event.action >> ]
-                - equal: [ false, << pipeline.event.github.pull_request.draft >> ]
-            # Draft changed to ready for review.
-            - equal: [ "ready_for_review", << pipeline.event.action >> ]
-            # Manual escape hatch: run when the run-ci label is added.
-            - and:
-                - equal: [ "labeled", << pipeline.event.action >> ]
-                - equal: [ "run-ci", << pipeline.event.github.label.name >> ]
+      or:
+        # Always validate changes on the repository's default branch.
+        - equal: [ true, << pipeline.git.branch.is_default >> ]
+        - and:
+            - equal: [ "pull_request", << pipeline.event.name >> ]
+            - or:
+                # Opened (draft or ready): always run when the PR is created.
+                - equal: [ "opened", << pipeline.event.action >> ]
+                # Any push while the PR is not a draft.
+                - and:
+                    - equal: [ "synchronize", << pipeline.event.action >> ]
+                    - equal: [ false, << pipeline.event.github.pull_request.draft >> ]
+                # Draft changed to ready for review.
+                - equal: [ "ready_for_review", << pipeline.event.action >> ]
+                # Manual escape hatch: run when the run-ci label is added.
+                - and:
+                    - equal: [ "labeled", << pipeline.event.action >> ]
+                    - equal: [ "run-ci", << pipeline.event.github.label.name >> ]
     jobs:
       - run-tests:
           name: test-and-validate
